@@ -9,10 +9,11 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>multicodec</name>
-    <url>https://github.com/java-multibase</url>
+    <name>java-multicodec</name>
+    <url>https://github.com/richardbergquist/java-multicodec</url>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
         <version.junit>4.13.1</version.junit>
