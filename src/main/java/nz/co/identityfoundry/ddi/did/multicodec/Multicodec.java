@@ -23,7 +23,7 @@ import java.util.TreeMap;
  * </p>
  *
  * <p> The code of a multicodec is usually encoded as unsigned varint as defined by multiformats/unsigned-varint.
- * It is then used as a prefix to identify the data that follows. This represents some additional non trivial binary
+ * It is then used as a prefix to identify the data that follows. This represents some additional non-trivial binary
  * operations.
  */
 public class Multicodec {
@@ -529,26 +529,37 @@ public class Multicodec {
         SUBSPACE_NS ("0xB39910"),
         KUMANDRA_NS ("0xB49910");
 
-        public String code;
-        public String uvarintcode;
-        public int length;
+        /**
+         * The codec code value.
+         */
+        public final String code;
+
+        /**
+         * The unsigned varint encoding of the code.
+         */
+        public final String uvarintcode;
 
         Codec(String code) {
             this.code = code;
             this.uvarintcode = uvarint();
-            this.length = HexUtils.hexToBytes(this.code).length;
         }
 
-        private static Map<String, Codec> codeLookup = new TreeMap<>();
+        private static final Map<String, Codec> codeLookup = new TreeMap<>();
         static {
-            for ( Codec codec:  Codec.values()) {
+            for (Codec codec: Codec.values()) {
                 codeLookup.put(codec.code, codec);
             }
         }
 
+        /**
+         * Performs a lookup on the Codec based on the code value.
+         * @param lookupCode The string code to lookup.
+         * @return The Codec based on the code value
+         * @throws IllegalArgumentException if the codec name does not exist.
+         */
         public static Codec lookupByCode(String lookupCode) {
             if (!codeLookup.containsKey(lookupCode)) {
-                throw new IllegalStateException("Unknown Multicodec name: " + lookupCode);
+                throw new IllegalArgumentException("Unknown Multicodec name: " + lookupCode);
             }
             return codeLookup.get(lookupCode);
         }
@@ -560,8 +571,8 @@ public class Multicodec {
         private String uvarint() {
             byte[] codecBytes = HexUtils.hexToBytes(this.code);
             StringBuilder uvarintBuilder = new StringBuilder();
-            for (int i = 0; i < codecBytes.length; i++){
-                byte[] varInt = VarInt.writeUnsignedVarInt(Byte.toUnsignedInt(codecBytes[i]));
+            for (byte codecByte : codecBytes) {
+                byte[] varInt = VarInt.writeUnsignedVarInt(Byte.toUnsignedInt(codecByte));
                 String varIntHex = HexUtils.bytesToHex(varInt);
                 uvarintBuilder.append(varIntHex);
             }
@@ -579,7 +590,7 @@ public class Multicodec {
      */
     public static byte[] encode(Codec multicodec, byte[] data) {
 
-        //Get the multicodec prefix of the encoding type as an array as some codes use multi-byte prefixes.
+        //Get the multicodec prefix of the encoding type as an array as some codes use multibyte prefixes.
         byte[] multicodecCodeBytes = HexUtils.hexToBytes(multicodec.code);
 
         //Create a byte array pre-pended with the multicodec prefix for the multicodecType
@@ -637,13 +648,14 @@ public class Multicodec {
         Object[] responseObject = new Object[3];
         boolean foundCodec = false;
 
-        //No clever shortcuts .. we simply loop over the set of the codecs and find a match at the start of the string.
+        //No clever shortcuts - we simply loop over the set of the codecs and find a match at the start of the string.
         //Remembering that the codec at the start will be unsigned varint encoded ...
         String multicodecDataHex = HexUtils.bytesToHex(multicodecData);
 
         for (Codec c : Codec.values()) {
-            //as per stated assumption
-            if (c.length == 1) {
+            //as per stated assumption...
+            int codeLength = HexUtils.hexToBytes(c.code).length;
+            if (codeLength == 1) {
                 if (multicodecDataHex.startsWith(c.uvarintcode)) {
                     responseObject[0] = c;
                     String dataHex = StringUtils.removeStart(multicodecDataHex, c.uvarintcode);

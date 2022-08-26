@@ -1,4 +1,7 @@
 package nz.co.identityfoundry.ddi.did.util;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -15,15 +18,8 @@ package nz.co.identityfoundry.ddi.did.util;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-
-
-/**
+ * --------------------------------------------------------------------------------
+ *
  * <p>Encodes signed and unsigned values using a common variable-length
  * scheme, found for example in
  * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html">
@@ -34,6 +30,7 @@ import java.io.IOException;
  * in order to make them "compatible" with variable-length encoding.</p>
  */
 
+@SuppressWarnings("GrazieInspection")
 public final class VarInt {
 
     private VarInt() {}
@@ -42,7 +39,7 @@ public final class VarInt {
      * Encodes a value using the variable-length encoding from
      * <a href="http://code.google.com/apis/protocolbuffers/docs/encoding.html">
      * Google Protocol Buffers</a>. It uses zig-zag encoding to efficiently
-     * encode signed values. If values are known to be nonnegative,
+     * encode signed values. If values are known to be non negative,
      * {@link #writeUnsignedVarLong(long, DataOutput)} should be used.
      *
      * @param value value to encode

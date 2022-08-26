@@ -12,14 +12,18 @@ import java.util.Collection;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests over all the documented codec values.
+ *
+ */
 @RunWith(Parameterized.class)
 public class MulticodecFullTest {
 
     private static final String SAMPLE_DATA_HEX = "A1E9D3D8EC";
 
-    private Multicodec.Codec codec;
-    private byte[] raw;
-    private String expectedEncodingHex;
+    private final Multicodec.Codec codec;
+    private final byte[] raw;
+    private final String expectedEncodingHex;
 
     public MulticodecFullTest(Multicodec.Codec codec, byte[] raw, String expectedEncodingHex) {
         this.codec = codec;
@@ -537,6 +541,7 @@ public class MulticodecFullTest {
         byte[] actualEncoding = Multicodec.encode(codec, raw);
         byte[] expectedEncodingBytes = HexUtils.hexToBytes(expectedEncodingHex);
 
+        assert actualEncoding != null;
         String actualEncodingHex = HexUtils.bytesToHex(actualEncoding);
         if (!StringUtils.equals(expectedEncodingHex, actualEncodingHex)) {
             System.err.println("Encoding error found for:" + codec.name() + "(" + codec.code + ")" + "\nexpected:" + expectedEncodingHex + "\ngot:" + actualEncodingHex);
@@ -549,16 +554,20 @@ public class MulticodecFullTest {
      * <br/>
      * Assumes decoding is only supported for single byte codec codes, as multibyte codecs codes cannot be
      * unambiguously decoded as per comments in the linked references below.<br/>
-     * @see {@link nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException}
-     * @see {@link nz.co.identityfoundry.ddi.did.multicodec.Mutlicodec#decode()}
+     * <br/>
+     * Refer to: {@link nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException} for more information.
+     * <br/>
+     * @see nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException
+     *
+
      */
     @Test
     public void testDecode() {
 
         //Only test over single byte codec codes. Multibyte codecs cannot be reliably decoded.
-        //@see {@link nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException}
-        if (codec.length == 1) {
-
+        //see nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException
+        int codeLength = HexUtils.hexToBytes(codec.code).length;
+        if (codeLength == 1) {
             Object[] output = new Object[0];
             try {
                 output = Multicodec.decode(HexUtils.hexToBytes(expectedEncodingHex));
@@ -572,8 +581,17 @@ public class MulticodecFullTest {
 
             assertEquals(String.format("Expected codec %s, but got %s", codec.name(), decodedCodec.name()), codec.name(), decodedCodec.name());
             assertArrayEquals(String.format("Expected data %s, but got %s", HexUtils.bytesToHex(raw), actualByteDataHex), raw, actualByteData);
-
         }
+    }
+
+    /**
+     * Tests the lookup of codec code.
+     */
+    @Test
+    public void testLookup() {
+        String codecCode = codec.code;
+        Multicodec.Codec lookupCodec = Multicodec.Codec.lookupByCode(codecCode);
+        assertEquals(String.format("Lookup found codec %s", codecCode), codecCode, lookupCodec.code);
     }
 
 }
