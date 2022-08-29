@@ -559,10 +559,9 @@ public class MulticodecFullTest {
      * <br/>
      * @see nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException
      *
-
      */
     @Test
-    public void testDecode() {
+    public void testDecodeSingleByteCodec() {
 
         //Only test over single byte codec codes. Multibyte codecs cannot be reliably decoded.
         //see nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException
@@ -575,12 +574,56 @@ public class MulticodecFullTest {
                 e.printStackTrace();
             }
 
+            if (output.length == 3) {
+                Multicodec.Codec decodedCodec = (Multicodec.Codec) output[0];
+                byte[] actualByteData = (byte[]) output[1];
+                String actualByteDataHex = (String) output[2];
+
+                assertEquals(String.format("Expected codec %s, but got %s", codec.name(), decodedCodec.name()), codec.name(), decodedCodec.name());
+                assertArrayEquals(String.format("Expected data %s, but got %s", HexUtils.bytesToHex(raw), actualByteDataHex), raw, actualByteData);
+            }
+        }
+    }
+
+    /**
+     * <p>Tests the decoding of an encoded multicodec byte array.
+     * </p>
+     * <br/>
+     * <p>Tests over single byte and multibyte codecs to demonstrate issues where some multibyte codecs code clash with
+     * the code of others to produce situations where its ambiguous to determine which codec is in use.
+     * </p>
+     * <br/>
+     * Refer to: {@link nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException} for more information.
+     * <br/>
+     *
+     */
+    @Test
+    public void testDecodeAllCodecs() {
+
+        Object[] output = new Object[0];
+        try {
+            output = Multicodec.decode(HexUtils.hexToBytes(expectedEncodingHex));
+        } catch (AmbiguousCodecEncodingException exAmbiguousCodecEncoding) {
+            //This 'clash of codecs' decoding condition will be reported below.
+            //String m = String.format("AmbiguousCodecEncoding detected. Message:[%s] Input:[%s] Expected codec code:[%s(%s)]",
+            //        exAmbiguousCodecEncoding.getMessage(),
+            //        expectedEncodingHex,
+            //        codec.name(),
+            //        codec.code);
+            //System.err.println(m);
+        }
+
+        if (output.length == 3) {
             Multicodec.Codec decodedCodec = (Multicodec.Codec) output[0];
             byte[] actualByteData = (byte[]) output[1];
             String actualByteDataHex = (String) output[2];
 
-            assertEquals(String.format("Expected codec %s, but got %s", codec.name(), decodedCodec.name()), codec.name(), decodedCodec.name());
-            assertArrayEquals(String.format("Expected data %s, but got %s", HexUtils.bytesToHex(raw), actualByteDataHex), raw, actualByteData);
+            //assertEquals(String.format("Expected codec [%s(%s)], but got [%s(%s)] for data:[%s]", codec.name(), codec.code, decodedCodec.name(), decodedCodec.code, expectedEncodingHex), codec.name(), decodedCodec.name());
+            if (!StringUtils.equals(codec.name(), decodedCodec.name())) {
+                String codecClashMessage =
+                        String.format("'Clash of codecs' spec problem: cannot decode between [%s(%s)], and [%s(%s)] for sample data:[%s] because codes start with the same values.", codec.name(), codec.code, decodedCodec.name(), decodedCodec.code, expectedEncodingHex);
+                System.out.println(codecClashMessage);
+            }
         }
     }
 
