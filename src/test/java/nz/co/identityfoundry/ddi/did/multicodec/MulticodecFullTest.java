@@ -540,9 +540,10 @@ public class MulticodecFullTest {
     public void testEncode() {
         byte[] actualEncoding = Multicodec.encode(codec, raw);
         byte[] expectedEncodingBytes = HexUtils.hexToBytes(expectedEncodingHex);
-
         assert actualEncoding != null;
+
         String actualEncodingHex = HexUtils.bytesToHex(actualEncoding);
+        //System.out.println(String.format("multicodec encoding for:[%s(%s)] is:[%s]", codec.name(), codec.code, expectedEncodingHex));
         if (!StringUtils.equals(expectedEncodingHex, actualEncodingHex)) {
             System.err.println("Encoding error found for:" + codec.name() + "(" + codec.code + ")" + "\nexpected:" + expectedEncodingHex + "\ngot:" + actualEncodingHex);
         }
