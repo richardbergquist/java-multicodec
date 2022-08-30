@@ -19,6 +19,7 @@ package nz.co.identityfoundry.ddi.did.multicodec;
  *
  */
 public class AmbiguousCodecEncodingException extends Exception {
+
     AmbiguousCodecEncodingException(String message) {
         super(message);
     }

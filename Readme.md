@@ -39,7 +39,7 @@ This project also solves for a java implementation of unsigned varints so may al
 byte[] raw = getEd25519PublicKeyData();
 byte[] multicodecEncoding = Multicodec.encode(Multicodec.Codec.ED25519_PUB, raw);
 
-//Demonstate decoding...
+//Demonstrate decoding...
 Multicodec.Codec decodedCodec = null;
 byte[] decodedByteData = null;
 String decodedByteDataHex = null;
@@ -229,10 +229,9 @@ These clashes occur in a number of situations and are listed below.
 
 #### Current Workarounds
 The `Multicodec.decode()` method makes the assumption that the decoding only supports single byte codec codes, to prevent the "clash of codecs" issue from presenting itself.
-This means that while `Multicodec.encode()` method can encode for any codec code, but the `Multicodec.decode()` does not support decoding of multibyte codec codes. 
+This means that while `Multicodec.encode()` method can encode for any codec code, the `Multicodec.decode()` does not support decoding of multibyte codec codes. 
 
 If `Multicodec.decode()` is used to decode a multibyte codec code then `AmbiguousCodecEncodingException` is thrown. 
-
 
 #### Possible Solutions
 #### Solution A : Use of a reserved character delimiter

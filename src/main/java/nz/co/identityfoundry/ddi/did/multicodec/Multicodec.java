@@ -1,6 +1,5 @@
 package nz.co.identityfoundry.ddi.did.multicodec;
 
-
 import nz.co.identityfoundry.ddi.did.util.HexUtils;
 import nz.co.identityfoundry.ddi.did.util.VarInt;
 import org.apache.commons.lang3.StringUtils;
