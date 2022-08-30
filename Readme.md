@@ -211,8 +211,8 @@ The bytes used in the codec prefix need to be unambigious. Pick a used reserved 
 
 | name     | code   | delimiter | sample data  | example encoding   | decoding [codec] [data]           |
 |----------|--------|-----------|--------------|--------------------|-----------------------------------|
-| cidv1    | 0x01   | 0x00      | 0xA1E9D3D8EC | 0x0100A1E9D3D8EC   | 0x [0100]   [A1E9D3D8EC] -> cidv1 |
-| upd      | 0x0111 | 0x00      | 0xA1E9D3D8EC | 0x011100A1E9D3D8EC | 0x [011100] [A1E9D3D8EC] -> udp   |
+| `cidv1`    | `0x01`   | `0x00`      | `0xA1E9D3D8EC` | `0x0100A1E9D3D8EC`   | `0x` `[0100]`   `[A1E9D3D8EC]` -> `cidv1` |
+| `upd`      | `0x0111` | `0x00`      | `0xA1E9D3D8EC` | `0x011100A1E9D3D8EC` | `0x` `[011100]` `[A1E9D3D8EC]` -> `udp`   |
 
 
 ##### Pros
@@ -252,12 +252,12 @@ The bytes used in the codec prefix need to be unambiguous.
 
 ##### Examples
 
-| name     | code   | reserved byte | sample data  | example encoding     | decoding: [rb?][codec][rb?] [data]         |
-|----------|--------|---------------|--------------|----------------------|--------------------------------------------|
-| cidv1    | 0x01   | n/a           | 0xA1E9D3D8EC | 0x01A1E9D3D8EC       | 0x [01]           [A1E9D3D8EC] -> cidv1    |
-| sha2_256 | 0x12   | n/a           | 0xA1E9D3D8EC | 0x12A1E9D3D8EC       | 0x [12]           [A1E9D3D8EC] -> sha2_256 |
-| upd      | 0x0111 | 0x00          | 0xA1E9D3D8EC | 0x00011100A1E9D3D8EC | 0x [00][0111][00] [A1E9D3D8EC] -> udp      |
-| p256_pub | 0x1200 | 0x00          | 0xA1E9D3D8EC | 0x00120000A1E9D3D8EC | 0x [00][1200][00] [A1E9D3D8EC] -> p256_pub |
+| name       | code     | reserved byte | sample data    | example encoding       | decoding: [rb?][codec][rb?] [data]                       |
+|------------|----------|---------------|----------------|------------------------|----------------------------------------------------------|
+| `cidv1`    | `0x01`   | n/a           | `0xA1E9D3D8EC` | `0x01A1E9D3D8EC`       | `0x` `[01]` `[A1E9D3D8EC]` -> `cidv1`                    |
+| `sha2_256` | `0x12`   | n/a           | `0xA1E9D3D8EC` | `0x12A1E9D3D8EC`       | `0x` `[12]` `[A1E9D3D8EC]` -> `sha2_256`                 |
+| `upd`      | `0x0111` | `0x00`        | `0xA1E9D3D8EC` | `0x00011100A1E9D3D8EC` | `0x` `[00]` `[0111]` `[00]` `[A1E9D3D8EC]` -> `udp`      |
+| `p256_pub` | `0x1200` | `0x00`        | `0xA1E9D3D8EC` | `0x00120000A1E9D3D8EC` | `0x` `[00]` `[1200]` `[00]` `[A1E9D3D8EC]` -> `p256_pub` |
 
 
 ##### Pros
