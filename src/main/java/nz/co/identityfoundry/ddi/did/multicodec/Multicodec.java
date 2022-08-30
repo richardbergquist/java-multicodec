@@ -11,20 +11,21 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * <p> The specifications for Decentralised Identifiers (DIDs) make use of multicodec specification. <p/>
- * <p> The multicodec is an agreed way for encodiong bytes with a prefix that specifies the type of encoding. </p>
- * <p>The format is therefore a portable and self describing way of expressing an encoding of bytes that does not
- * assume a specific context.</p>
- * <p>For example the multicodec specification is used in the DID Method 'key' specification See:
- * <ol>
- * <li><a href="https://w3c-ccg.github.io/did-method-key">https://w3c-ccg.github.io/did-method-key</a></li>
- * <li><a href="https://github.com/multiformats/multicodec/blob/master/README.md">https://github.com/multiformats/multicodec/blob/master/README.md</a></li>
- * </ol>
- * </p>
+ * <p>Multicodec is part of the Multiformats collection of protocols.</p>
+ * <br/>
+ * <p>Multiformats is a collection of protocols which aim to future-proof systems, today. They do this mainly by allowing
+ * data to be self-describable.</p>
+ * <p>See: <a href="https://github.com/multiformats/multiformats">https://github.com/multiformats/multiformats</a></p>
+ * <p>The Multicodec is an agreed way for encoding bytes with a prefix that specifies the type of encoding.
+ * The format is therefore a portable and self describing way of expressing an encoding of bytes that does not assume
+ * a specific context. </p>
+ * <p>See: <a href="https://github.com/multiformats/multicodec">https://github.com/multiformats/multicodec</a></p>
+ * <p>For example, the multicodec specification is used in the specifications for Decentralised Identifiers (DIDs) in
+ * regard to the DID Method 'key' specification.
+ * Therefore, any work on `did:key` implementations needs to also solve for the use of multicodecs.</p>
+ * <p>See: <a href="https://w3c-ccg.github.io/did-method-key">https://w3c-ccg.github.io/did-method-key</a></p>
+ * <br/>
  *
- * <p> The code of a multicodec is usually encoded as unsigned varint as defined by multiformats/unsigned-varint.
- * It is then used as a prefix to identify the data that follows. This represents some additional non-trivial binary
- * operations.
  */
 public class Multicodec {
 

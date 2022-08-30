@@ -33,6 +33,29 @@ It is then used as a prefix to identify the data that follows. This represents s
 
 This project also solves for a java implementation of unsigned varints so may also be of use for implementors.
 
+### Sample Usage
+```
+//Demonstrate the encode data as a ED25519 public key...
+byte[] raw = getEd25519PublicKeyData();
+byte[] multicodecEncoding = Multicodec.encode(Multicodec.Codec.ED25519_PUB, raw);
+
+//Demonstate decoding...
+Multicodec.Codec decodedCodec = null;
+byte[] decodedByteData = null;
+String decodedByteDataHex = null;
+Object[] output = new Object[0];
+try {
+    output = Multicodec.decode(multicodecEncoding);
+} catch (AmbiguousCodecEncodingException exAmbiguousCodecEncoding) {
+    System.err.println(exAmbiguousCodecEncoding.getMessage());
+}
+if (output.length == 3) {
+    decodedCodec = (Multicodec.Codec) output[0];
+    decodedByteData = (byte[]) output[1];
+    decodedByteDataHex = (String) output[2];
+}
+```
+
 ## Known Problems
 
 ### Clash of Codecs - Decoding
@@ -202,6 +225,14 @@ These clashes occur in a number of situations and are listed below.
 'Clash of codecs' spec problem: cannot decode between [BLAKE2S_192(0xB258)], and [BITCOIN_WITNESS_COMMITMENT(0xB2)] for sample data:[B20158A1E9D3D8EC] because codes start with the same values.
 
 </pre>
+
+
+#### Current Workarounds
+The `Multicodec.decode()` method makes the assumption that the decoding only supports single byte codec codes, to prevent the "clash of codecs" issue from presenting itself.
+This means that while `Multicodec.encode()` method can encode for any codec code, but the `Multicodec.decode()` does not support decoding of multibyte codec codes. 
+
+If `Multicodec.decode()` is used to decode a multibyte codec code then `AmbiguousCodecEncodingException` is thrown. 
+
 
 #### Possible Solutions
 #### Solution A : Use of a reserved character delimiter
