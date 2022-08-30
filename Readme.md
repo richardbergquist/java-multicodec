@@ -239,10 +239,10 @@ The bytes used in the codec prefix need to be unambigious. Pick a used reserved 
 
 ##### Examples
 
-| name     | code   | delimiter | sample data  | example encoding   | decoding [codec] [data]           |
-|----------|--------|-----------|--------------|--------------------|-----------------------------------|
-| `cidv1`    | `0x01`   | `0x00`      | `0xA1E9D3D8EC` | `0x0100A1E9D3D8EC`   | `0x` `[0100]`   `[A1E9D3D8EC]` -> `cidv1` |
-| `upd`      | `0x0111` | `0x00`      | `0xA1E9D3D8EC` | `0x011100A1E9D3D8EC` | `0x` `[011100]` `[A1E9D3D8EC]` -> `udp`   |
+| name     | code     | delimiter | sample data    | example encoding     | decoding [codec] [data]                   |
+|----------|----------|-----------|----------------|----------------------|-------------------------------------------|
+| `cidv1`  | `0x01`   | `0x00`    | `0xA1E9D3D8EC` | `0x0100A1E9D3D8EC`   | `0x` `[0100]`   `[A1E9D3D8EC]` -> `cidv1` |
+| `upd`    | `0x0111` | `0x00`    | `0xA1E9D3D8EC` | `0x011100A1E9D3D8EC` | `0x` `[011100]` `[A1E9D3D8EC]` -> `udp`   |
 
 
 ##### Pros

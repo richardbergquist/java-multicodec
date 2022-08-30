@@ -534,7 +534,7 @@ public class MulticodecFullTest {
     }
 
     /**
-     * Tests the encoding of bytes to a muticodec codec type.
+     * Tests the encoding of bytes to a multicodec codec type.
      */
     @Test
     public void testEncode() {
@@ -570,8 +570,9 @@ public class MulticodecFullTest {
             Object[] output = new Object[0];
             try {
                 output = Multicodec.decode(HexUtils.hexToBytes(expectedEncodingHex));
-            } catch (AmbiguousCodecEncodingException e) {
-                e.printStackTrace();
+            } catch (AmbiguousCodecEncodingException exAmbiguousCodecEncoding) {
+                exAmbiguousCodecEncoding.printStackTrace();
+                System.err.println("AmbiguousCodecEncodingException:" + exAmbiguousCodecEncoding.getMessage());
             }
 
             if (output.length == 3) {
@@ -609,10 +610,6 @@ public class MulticodecFullTest {
 
         if (output.length == 3) {
             Multicodec.Codec decodedCodec = (Multicodec.Codec) output[0];
-            byte[] decodedByteData = (byte[]) output[1];
-            String decodedByteDataHex = (String) output[2];
-
-            //assertEquals(String.format("Expected codec [%s(%s)], but got [%s(%s)] for data:[%s]", codec.name(), codec.code, decodedCodec.name(), decodedCodec.code, expectedEncodingHex), codec.name(), decodedCodec.name());
             if (!StringUtils.equals(codec.name(), decodedCodec.name())) {
                 String codecClashMessage =
                         String.format("'Clash of codecs' spec problem: cannot decode between [%s(%s)], and [%s(%s)] for sample data:[%s] because codes start with the same values.",
