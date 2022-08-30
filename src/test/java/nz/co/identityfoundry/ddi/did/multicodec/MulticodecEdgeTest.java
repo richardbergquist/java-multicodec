@@ -23,7 +23,7 @@ public class MulticodecEdgeTest {
      */
     @Test
     public void testLookupInvalid() {
-        assertThrows(IllegalArgumentException.class, ()-> Multicodec.Codec.lookupByCode(INVALID_CODEC_CODE));
+        assertThrows(IllegalArgumentException.class, ()-> Multicodec.lookupByCode(INVALID_CODEC_CODE));
     }
 
     /**

@@ -35,24 +35,21 @@ This project also solves for a java implementation of unsigned varints so may al
 
 ### Sample Usage
 ```
-//Demonstrate the encode data as a ED25519 public key...
+//Demonstrate the encoding of data for an example ED25519 public key...
 byte[] raw = getEd25519PublicKeyData();
 byte[] multicodecEncoding = Multicodec.encode(Multicodec.Codec.ED25519_PUB, raw);
 
-//Demonstrate decoding...
-Multicodec.Codec decodedCodec = null;
-byte[] decodedByteData = null;
-String decodedByteDataHex = null;
-Object[] output = new Object[0];
+//Demonstrate the decoding...
+DecodedData decodedData = null;
 try {
-    output = Multicodec.decode(multicodecEncoding);
+    decodedData = MulticodecEncoder.decode(multicodecEncoding);
 } catch (AmbiguousCodecEncodingException exAmbiguousCodecEncoding) {
-    System.err.println(exAmbiguousCodecEncoding.getMessage());
+    System.err.println("AmbiguousCodecEncodingException:" + exAmbiguousCodecEncoding.getMessage());
 }
-if (output.length == 3) {
-    decodedCodec = (Multicodec.Codec) output[0];
-    decodedByteData = (byte[]) output[1];
-    decodedByteDataHex = (String) output[2];
+if (decodedData != null) {
+    System.out.printf("Codec:%s(%s)%n", decodedData.getCodec().name(), decodedData.getCodec().code);
+    System.out.println("byte data length:" + decodedData.getByteData().length);
+    System.out.println("hex data:" + decodedData.getHexData());
 }
 ```
 
@@ -235,7 +232,7 @@ If `Multicodec.decode()` is used to decode a multibyte codec code then `Ambiguou
 
 #### Possible Solutions
 #### Solution A : Use of a reserved character delimiter
-The bytes used in the codec prefix need to be unambigious. Pick a used reserved byte (e.g. `0x00`) and use as a delimiter between the codec code bytes and the data
+The bytes used in the codec prefix need to be unambiguous. Pick a used reserved byte (e.g. `0x00`) and use as a delimiter between the codec code bytes and the data
 
 ##### Examples
 
@@ -260,7 +257,7 @@ The bytes used in the codec prefix need to be unambigious. Pick a used reserved 
 - The optimisation is in favour of the newer multibyte codecs that are in a draft over single byte codecs that are in permanent state.
 
 #### Solution B : Careful selection of codecs that avoids clashes
-The bytes used in the codec prefix need to be unambigious. The multibyte codec values that are in draft need to be re-assigned so there is no possible clashes.
+The bytes used in the codec prefix need to be unambiguous. The multibyte codec values that are in draft need to be re-assigned so there is no possible clashes.
 
 ##### Pros
 - Codec prefixes are explicit and unambiguous
