@@ -33,16 +33,16 @@ It is then used as a prefix to identify the data that follows. This represents s
 
 This project also solves for a java implementation of unsigned varints so may also be of use for implementors.
 
-### Known Problems
+## Known Problems
 
-#### Clash of Codecs - Decoding
+### Clash of Codecs - Decoding
 There are two basic classes of the codecs, single bytes codes (e.g `cidv1`(0x01), `sha2_256`(0x12)) and multibyte codecs
 (e.g. `upd`(0x0111), `p256_pub`(0x1200)).
 
 The way that the codec codes are configured it is possible to encode to them, but there are situations where it is not
 possible to decode.
 
-##### Example 1:
+#### Example 1:
 
  1. Consider the sample data as hex: `0xA1E9D3D8EC`
  2. When it is multicodec `cidv1` encoded we have : `0xA1E9D3D8EC` --(`cidv1`)--> `0x01A1E9D3D8EC`
@@ -52,7 +52,7 @@ possible to decode.
     1. `cidv1` encoded with data: `0x11A1E9D3D8EC`
     2. `upd` encoded with data: `0xA1E9D3D8EC`
 
-##### Example 2:
+#### Example 2:
 
 Another example also applies to `sha2_256` and `p256_pub` encoding.
  1. When it is multicodec `sha2_256` encoded we have : `0xA1E9D3D8EC` --(`sha2_256`)--> `0x12A1E9D3D8EC`
@@ -62,7 +62,7 @@ Another example also applies to `sha2_256` and `p256_pub` encoding.
     1. `sha2_256` encoded with data: `0x00A1E9D3D8EC`
     2. `p256_pub` encoded with data: `0x1200A1E9D3D8EC`
 
-##### List of clashes
+#### List of clashes
 These clashes occur in a number of situations and are listed below.
 <pre>
 'Clash of codecs' spec problem: cannot decode between [UDP(0x0111)], and [CIDV1(0x01)] for sample data:[0111A1E9D3D8EC] because codes start with the same values.
@@ -203,11 +203,11 @@ These clashes occur in a number of situations and are listed below.
 
 </pre>
 
-##### Possible Solutions
-##### Solution A : Use of a reserved character delimiter
+#### Possible Solutions
+#### Solution A : Use of a reserved character delimiter
 The bytes used in the codec prefix need to be unambigious. Pick a used reserved byte (e.g. `0x00`) and use as a delimiter between the codec code bytes and the data
 
-Example. 
+##### Examples
 
 | name     | code   | delimiter | sample data  | example encoding   | decoding [codec] [data]           |
 |----------|--------|-----------|--------------|--------------------|-----------------------------------|
@@ -215,44 +215,42 @@ Example.
 | upd      | 0x0111 | 0x00      | 0xA1E9D3D8EC | 0x011100A1E9D3D8EC | 0x [011100] [A1E9D3D8EC] -> udp   |
 
 
-Pros
+##### Pros
 - Codec prefixes are explicit and unambiguous
 - Common simple rule applied across all codecs
 
-Cons
+##### Cons
 - Breaking change for the in-use single byte codecs
 - Relies on no codecs ending in the reserved byte (e.g. `0x00`), which is an implicit rule that is too easily broken for new codec additions.
 - Any codec that ends in the reserved byte (e.g. `0x00`) must be reassigned to a value that does not. e.g. `p256_pub`(`0x1200`) must be reassigned.
 
-Recommendation:
- - This will break a number of existing implementations that assume single byte codec in order to optimise to a simple rule. 
- - The optimisation is in favour of the newer multibyte codecs that are in a draft 
- - The optimisation breaks many of single byte codec that are in permanent state.
- - Not recommended.
+##### Recommendation:
+- Not recommended.
+- This will break a number of existing implementations that assume single byte codec in order to optimise to a simple rule. 
+- The optimisation is in favour of the newer multibyte codecs that are in a draft over single byte codecs that are in permanent state.
 
-##### Solution B : Careful selection of codecs that avoids clashes
+#### Solution B : Careful selection of codecs that avoids clashes
 The bytes used in the codec prefix need to be unambigious. The multibyte codec values that are in draft need to be re-assigned so there is no possible clashes.
 
-Pros
+##### Pros
 - Codec prefixes are explicit and unambiguous
-- Non breaking change for the in-use single byte codecs
+- Non-breaking change for the in-use single byte codecs
 
+##### Cons
+- Any multibyte codec that clashes with a single byte codec must be reassigned to a value that does not clash. Large reassignment exercise of multibyte codecs
+- Relies on an implicit subtle rule that is embedded into the codec selections. The rule will likely be broken for new codec additions that are unaware of the clashing issue.
 
-Cons
-- Any multibyte codec that clashes with a single byte codec must be reassigned to a value that does not clash.
-- Large reassignment exercise of multibyte codecs
-- Relies on an implicit rule that subtle and embedded into the codec selections. Will likely be broken again for new codec additions for those that are unaware of the clashing issue.
+##### Recommendation:
+- Weakly viable, but not recommended. 
+- Will result in a significant refactoring and bulk reassignment process for a significant proportion of the multibyte codecs.
 
-Recommendation:
-- Possible, but will result in a significant refactoring and bulk reassignment process for a significant proportion of the  multibyte codecs.
-
-##### Solution C : Use of a reserved character delimiter, but only for multibyte codecs
-The bytes used in the codec prefix need to be unambigious.
-1. Pick an unused reserved byte (e.g. `0x00`) ("rb")
+#### Solution C : Use of a reserved character delimiter, but only for multibyte codecs
+The bytes used in the codec prefix need to be unambiguous.
+1. Pick an unused reserved byte (rb) (e.g. `0x00`) 
 2. Create rule that allows single byte codecs, so long as they do not start with the reserved byte (`0x00`).
-3. If a multiple byte codec is adopted it must start and end with the reserved byte (`0x00`).
+3. If a multiple byte codec is adopted then it must start and end with the reserved byte (`0x00`).
 
-Example.
+##### Examples
 
 | name     | code   | reserved byte | sample data  | example encoding     | decoding: [rb?][codec][rb?] [data]         |
 |----------|--------|---------------|--------------|----------------------|--------------------------------------------|
@@ -262,18 +260,18 @@ Example.
 | p256_pub | 0x1200 | 0x00          | 0xA1E9D3D8EC | 0x00120000A1E9D3D8EC | 0x [00][1200][00] [A1E9D3D8EC] -> p256_pub |
 
 
-Pros
-- Codec prefixes are explicit and unambiguous
-- Non-breaking change for the in-use single byte codecs
+##### Pros
+- Codec prefixes are explicit and unambiguous.
+- Non-breaking change for the in-use single byte codecs.
 - Does not rely on clever implicit rules to stagger codec selections that will be easily broken.
-- Does not need a large reassignment exercise of multibyte codecs
+- Does not need a large reassignment exercise of the multibyte codecs.
 - The impact is limited only to multibyte codecs, which are mostly in draft status.
 
+##### Cons
+- Any existing multibyte codecs implementations must adopt the rule.
 
-Cons
-- Any existing multibyte codecs implementations must adopt the rule
-
-Recommendation:
+##### Recommendation:
 - Recommended as most viable.
-- Does not break most permanent implementations. Ring fences change to the more problematic multibyte codecs that are in draft.
+- Does not break most permanent implementations. 
+- Ring fences change to the more problematic multibyte codecs that are in draft.
 
