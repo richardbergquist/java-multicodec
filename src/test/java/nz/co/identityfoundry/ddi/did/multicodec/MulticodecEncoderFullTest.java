@@ -574,7 +574,7 @@ public class MulticodecEncoderFullTest {
             }
             assertNotNull("DecodedData was not null", decodedData);
             assertEquals(String.format("Expected codec %s, but got %s", codec.name(), decodedData.getCodec().name()), codec.name(), decodedData.getCodec().name());
-            assertArrayEquals(String.format("Expected data %s, but got %s", HexUtils.bytesToHex(raw), decodedData.getHexData()), raw, decodedData.getByteData());
+            assertArrayEquals(String.format("Expected data %s, but got %s", HexUtils.bytesToHex(raw), decodedData.getDataAsHex()), raw, decodedData.getDataAsBytes());
         }
     }
 

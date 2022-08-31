@@ -48,8 +48,8 @@ try {
 }
 if (decodedData != null) {
     System.out.printf("Codec:%s(%s)%n", decodedData.getCodec().name(), decodedData.getCodec().code);
-    System.out.println("byte data length:" + decodedData.getByteData().length);
-    System.out.println("hex data:" + decodedData.getHexData());
+    System.out.println("byte data length:" + decodedData.getDataAsBytes().length);
+    System.out.println("hex data:" + decodedData.getDataAsHex());
 }
 ```
 

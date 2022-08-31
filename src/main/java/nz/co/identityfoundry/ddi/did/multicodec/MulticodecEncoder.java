@@ -99,9 +99,7 @@ public class MulticodecEncoder {
             int codeLength = HexUtils.hexToBytes(c.code).length;
             if ((codeLength == 1) && (multicodecEncodedDataHex.startsWith(c.uvarintcode))) {
                 data.setCodec(c);
-                String dataHex = StringUtils.removeStart(multicodecEncodedDataHex, c.uvarintcode);
-                data.setByteData(HexUtils.hexToBytes(dataHex));
-                data.setHexData(dataHex);
+                data.setData(StringUtils.removeStart(multicodecEncodedDataHex, c.uvarintcode));
                 break;
             }
         }
