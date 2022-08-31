@@ -599,11 +599,6 @@ public class MulticodecEncoderFullTest {
         } catch (AmbiguousCodecEncodingException exAmbiguousCodecEncoding) {
             //This 'clash of codecs' decoding condition will be reported below.
         }
-        if (decodedData != null) {
-            System.out.printf("Codec:%s(%s)%n", decodedData.getCodec().name(), decodedData.getCodec().code);
-            System.out.println("byte data length:" + decodedData.getByteData().length);
-            System.out.println("hex data:" + decodedData.getHexData());
-        }
 
         if ((decodedData != null) && !StringUtils.equals(codec.name(), decodedData.getCodec().name())) {
             String codecClashMessage =
