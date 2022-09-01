@@ -29,7 +29,7 @@ public class MulticodecEncoder {
     /**
      * Encodes the byte array of data for the multicodec type.
      * The multicodec type bytes are unsigned varint encoded and are pre-pended to the byte array.
-     * @param multicodec The Multicodec.CodecName enum to use.
+     * @param multicodec The Multicodec enum to encode with.
      * @param data The bytes of data to encode.
      * @return The multicodec encoding of the input bytes
      *
