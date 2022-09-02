@@ -1,4 +1,4 @@
-package nz.co.identityfoundry.ddi.did.util;
+package com.identityfoundry.ddi.protocol.common;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;

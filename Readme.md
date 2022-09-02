@@ -1,4 +1,5 @@
 # Java Multicodec
+_By identityfoundry.com_
 
 ## About Multiformats
 Multicodec is part of the Multiformats collection of protocols.

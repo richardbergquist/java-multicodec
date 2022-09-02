@@ -1,4 +1,4 @@
-package nz.co.identityfoundry.ddi.did.util;
+package com.identityfoundry.ddi.protocol.common;
 
 import org.apache.commons.lang3.StringUtils;
 

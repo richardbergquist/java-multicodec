@@ -1,6 +1,6 @@
-package nz.co.identityfoundry.ddi.did.multicodec;
+package com.identityfoundry.ddi.protocol.multicodec;
 
-import nz.co.identityfoundry.ddi.did.util.HexUtils;
+import com.identityfoundry.ddi.protocol.common.HexUtils;
 
 /**
  * <p>A bean to encapsulate decoded data and its codec.</p>

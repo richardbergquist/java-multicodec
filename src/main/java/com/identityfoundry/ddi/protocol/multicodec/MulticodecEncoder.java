@@ -1,7 +1,7 @@
-package nz.co.identityfoundry.ddi.did.multicodec;
+package com.identityfoundry.ddi.protocol.multicodec;
 
-import nz.co.identityfoundry.ddi.did.util.HexUtils;
-import nz.co.identityfoundry.ddi.did.util.VarInt;
+import com.identityfoundry.ddi.protocol.common.HexUtils;
+import com.identityfoundry.ddi.protocol.common.VarInt;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;

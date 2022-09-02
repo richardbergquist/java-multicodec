@@ -1,4 +1,4 @@
-package nz.co.identityfoundry.ddi.did.multicodec;
+package com.identityfoundry.ddi.protocol.multicodec;
 
 /**
  * Some codec codes are multibyte values and these cannot be distinguished from single byte codec codes when the data follows.

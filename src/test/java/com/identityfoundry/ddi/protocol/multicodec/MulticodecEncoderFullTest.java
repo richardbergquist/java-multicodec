@@ -1,6 +1,6 @@
-package nz.co.identityfoundry.ddi.did.multicodec;
+package com.identityfoundry.ddi.protocol.multicodec;
 
-import nz.co.identityfoundry.ddi.did.util.HexUtils;
+import com.identityfoundry.ddi.protocol.common.HexUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -555,9 +555,9 @@ public class MulticodecEncoderFullTest {
      * Assumes decoding is only supported for single byte codec codes, as multibyte codecs codes cannot be
      * unambiguously decoded as per comments in the linked references below.<br/>
      * <br/>
-     * Refer to: {@link nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException} for more information.
+     * Refer to: {@link AmbiguousCodecEncodingException} for more information.
      * <br/>
-     * @see nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException
+     * @see AmbiguousCodecEncodingException
      *
      */
     @Test
@@ -586,7 +586,7 @@ public class MulticodecEncoderFullTest {
      * the code of others to produce situations where its ambiguous to determine which codec is in use.
      * </p>
      * <br/>
-     * Refer to: {@link nz.co.identityfoundry.ddi.did.multicodec.AmbiguousCodecEncodingException} for more information.
+     * Refer to: {@link AmbiguousCodecEncodingException} for more information.
      * <br/>
      *
      */
